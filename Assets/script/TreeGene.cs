@@ -11,7 +11,7 @@ public class TreeGene : MonoBehaviour
     public int attempts = 30;
     public Tilemap mapTree;
     public TileBase tree;
-    public int treeTop = 25;
+    public int treeTop = 0;
 
     private IEnumerator Start()
     {
@@ -24,18 +24,18 @@ public class TreeGene : MonoBehaviour
             for(i=0;i<100;i++)
             {
                 
-                if(mapTree.HasTile(new Vector3Int(rand_width,treeTop,0)))
+                if(mapTree.HasTile(new Vector3Int(treeTop,rand_width,0)))
                 {
                     treeTop++;
                 }
                 else
                 {
-                    mapTree.SetTile(new Vector3Int(rand_width, treeTop, 0), tree);
+                    mapTree.SetTile(new Vector3Int(treeTop, rand_width, 0), tree);
                     break;
                 }
                 
             }
-            treeTop = 25;
+            treeTop = 0;
             
         }
     }
