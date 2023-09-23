@@ -11,16 +11,136 @@ public class HexPipeline2 : MonoBehaviour
     int tileCount = 0;
     private bool a;
     public Vector3Int startCorePos;
+    public TileBase shade;
+    public Tilemap shadeMap;
+    public int leftMax;
+    public int rightMax;
+    public int depth;
+    public int startVision;
+    public int pipeVision;
 
     private void Start()
     {
+        //全体に影をつける
+        for (int i = leftMax; i <= rightMax; i++)
+        {
+            for (int j = 1; j >= depth; j--)
+            {
+                shadeMap.SetTile(new Vector3Int(j, i, 0), shade);
+            }
+        }
         pipeMap.SetTile(startCorePos, pipeTiles[0]);
         if(mineMap.HasTile(startCorePos))
         {
             mineMap.SetTile(startCorePos, null);
         }
+        ClearShade(startCorePos, startVision);
     }
+    //centerからvisionLenth以内のshadeを消す
+    public void ClearShade(Vector3Int center,int visionLenth)
+    {
+        Debug.Log("bbb");
+        for (int k =- visionLenth+center.x; k <= visionLenth+center.x; k++)
+        {
+            Debug.Log("ccc");
+            for (int l = -visionLenth+center.y; l <=visionLenth+center.y; l++)
+            {
+                Debug.Log("ddd");
+                if (shadeMap.HasTile(new Vector3Int(k, l, 0)) && GetDistance(center, new Vector3Int(k, l, 0)) <=visionLenth)
+                {
+                    Debug.Log("aaa");
+                    shadeMap.SetTile(new Vector3Int(k, l, 0), null);
+                 
+                }
+            }
+        }
+    }
+    //A,B間の距離をだす
+    public int GetDistance(Vector3Int A, Vector3Int B)
+    {
 
+        if (Mathf.Abs((A.y % 2)) == Mathf.Abs((B.y % 2)))
+        {
+            if (Mathf.Abs(A.y - B.y) <= 2 * Mathf.Abs(A.x - B.x))
+            {
+                //Debug.Log("1");
+                return (Mathf.Abs(A.y - B.y)) / 2 + Mathf.Abs(A.x - B.x); ;
+            }
+            else
+            {
+                //Debug.Log("2");
+                return Mathf.Abs(A.y - B.y);
+
+            }
+        }
+        else
+        {
+            if (A.x == B.x)
+            {
+               // Debug.Log("3");
+                return Mathf.Abs(A.y - B.y);
+            }
+            else if (A.x >= B.x)
+            {
+                if (A.y % 2 == 0)
+                {
+                    if ((Mathf.Abs(A.y - B.y) + 1) <= 2 * (Mathf.Abs(A.x - B.x)))
+                    {
+                        //Debug.Log("4");
+                        return (Mathf.Abs(A.y - B.y) + Mathf.Abs(A.x - B.x) - (Mathf.Abs(A.y - B.y) + 1) / 2);
+                    }
+                    else
+                    {
+                       // Debug.Log("5");
+                        return Mathf.Abs(A.y - B.y);
+                    }
+                }
+                else
+                {
+                    if ((Mathf.Abs(A.y - B.y) - 1) <= 2 * (Mathf.Abs(A.x - B.x)))
+                    {
+                        //Debug.Log("6");
+                        return (Mathf.Abs(A.y - B.y) + Mathf.Abs(A.x - B.x) - (Mathf.Abs(A.y - B.y) - 1) / 2);
+                    }
+                    else
+                    {
+                        //Debug.Log("7");
+                        return Mathf.Abs(A.y - B.y);
+                    }
+                }
+            }
+            else
+            {
+                if (B.y % 2 == 0)
+                {
+                    if ((Mathf.Abs(A.y - B.y) + 1) <= 2 * (Mathf.Abs(A.x - B.x)))
+                    {
+                       // Debug.Log("8");
+                        return (Mathf.Abs(A.y - B.y) + Mathf.Abs(A.x - B.x) - (Mathf.Abs(A.y - B.y) + 1) / 2);
+                    }
+                    else
+                    {
+                        //Debug.Log("9");
+                        return Mathf.Abs(A.y - B.y);
+                    }
+                }
+                else
+                {
+                    if ((Mathf.Abs(A.y - B.y) - 1) <= 2 * (Mathf.Abs(A.x - B.x)))
+                    {
+                      //  Debug.Log("10");
+                        return (Mathf.Abs(A.y - B.y) + Mathf.Abs(A.x - B.x) - (Mathf.Abs(A.y - B.y) - 1) / 2);
+                    }
+                    else
+                    {
+                       // Debug.Log("11");
+                        return Mathf.Abs(A.y - B.y);
+                    }
+                }
+            }
+        }
+
+    }
     //指定された位置のタイルに[pipeTiles]がある場合trueを返す
     public bool JudgeTiles(Vector3Int position)
     {
@@ -65,8 +185,9 @@ public class HexPipeline2 : MonoBehaviour
                     new Vector3Int(0,-1,0)+new Vector3Int(grid.x,grid.y,0),
 
                     };
+                    
                     TileRenderer(hexPosAro, grid);
-
+                 
                     foreach (Vector3Int aroPos in hexPosAro)
                     {
                         if (JudgeTiles(aroPos))
@@ -117,8 +238,9 @@ public class HexPipeline2 : MonoBehaviour
                     new Vector3Int(1,-1,0)+new Vector3Int(grid.x,grid.y,0),
 
                     };
+                    
                     TileRenderer(hexPosAro, grid);
-
+                    
                     foreach (Vector3Int aroPos in hexPosAro)
                     {
                         if (JudgeTiles(aroPos))
@@ -175,7 +297,11 @@ public class HexPipeline2 : MonoBehaviour
             }
 
         }
-        Debug.Log(tileCount);
+        if(tileCount>=1)
+        {
+            ClearShade(gridPos, pipeVision);
+        }
+        //Debug.Log(tileCount);
         if (pipeMap.HasTile(gridPos))
         {
             pipeMap.SetTile(gridPos, null);

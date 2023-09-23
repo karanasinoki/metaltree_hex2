@@ -7,12 +7,14 @@ public class CaveMap : MonoBehaviour
 {
     public Tilemap stageMap;
     public TileBase[] darts = new TileBase[24];
+    public TileBase shade;
     public int leftMax;
     public int rightMax;
     public int depth;
 
     private void Start()
     {
+        
         for(int x=leftMax;x<=rightMax;x++)
         {
             for(int y=0;y>=depth;y--)
@@ -21,5 +23,6 @@ public class CaveMap : MonoBehaviour
                 stageMap.SetTile(new Vector3Int(x, y, 0), darts[dartNum]);
             }
         }
+        
     }
 }
