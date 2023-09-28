@@ -39,7 +39,7 @@ public class HexPipeline2 : MonoBehaviour
 
                 foreach (Vector3Int aroPos in hexPosAro)
                 {
-                    if (stageMap.HasTile(aroPos))
+                    if (JudgeTiles(aroPos))
                     {
                         if (aroPos.y % 2 == 0)
                         {
@@ -91,7 +91,7 @@ public class HexPipeline2 : MonoBehaviour
 
                 foreach (Vector3Int aroPos in hexPosAro)
                 {
-                    if (stageMap.HasTile(aroPos))
+                    if (JudgeTiles(aroPos))
                     {
                         if (aroPos.y % 2 == 0)
                         {
