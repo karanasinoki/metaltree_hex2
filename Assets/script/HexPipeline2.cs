@@ -19,6 +19,10 @@ public class HexPipeline2 : MonoBehaviour
     public int startVision;
     public int pipeVision;
 
+    public int[] treeCost;
+
+    public Counter2 counter2;
+
     private void Start()
     {
         //‘S‘Ì‚É‰e‚ğ‚Â‚¯‚é
@@ -39,16 +43,16 @@ public class HexPipeline2 : MonoBehaviour
     //center‚©‚çvisionLenthˆÈ“à‚Ìshade‚ğÁ‚·
     public void ClearShade(Vector3Int center,int visionLenth)
     {
-        Debug.Log("bbb");
+        
         for (int k =- visionLenth+center.x; k <= visionLenth+center.x; k++)
         {
-            Debug.Log("ccc");
+            
             for (int l = -visionLenth+center.y; l <=visionLenth+center.y; l++)
             {
-                Debug.Log("ddd");
+                
                 if (shadeMap.HasTile(new Vector3Int(k, l, 0)) && GetDistance(center, new Vector3Int(k, l, 0)) <=visionLenth)
                 {
-                    Debug.Log("aaa");
+                    
                     shadeMap.SetTile(new Vector3Int(k, l, 0), null);
                  
                 }
@@ -159,7 +163,7 @@ public class HexPipeline2 : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&JudgeResources(treeCost))
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(
                 Input.mousePosition);
@@ -167,7 +171,8 @@ public class HexPipeline2 : MonoBehaviour
             Vector3Int grid = new Vector3Int(grid_pr.x, grid_pr.y, 0);
             if (!mineMap.HasTile(grid))
             {
-
+                UseResources(treeCost);
+                counter2.update++;
                 if (pipeMap.HasTile(grid))
                 {
                     pipeMap.SetTile(grid, null);
@@ -698,6 +703,33 @@ public class HexPipeline2 : MonoBehaviour
         }
         tileCount = 0;
     }
-   
-    
+
+    //•K—v‚È‘Œ¹‚ª‘«‚è‚Ä‚¢‚½‚çtrue‚ğ•Ô‚·ŠÖ”
+    public bool JudgeResources(int[] arrayA)
+    {
+
+        for (int i = 0; i < arrayA.Length; i++)
+        {
+            if (arrayA[i] <= counter2.newScore[i])
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //‘Œ¹‚ğÁ”ï‚·‚éŠÖ”
+    public void UseResources(int[] array)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            counter2.newScore[i] -= array[i];
+            Debug.Log("ss");
+        }
+
+    }
 }

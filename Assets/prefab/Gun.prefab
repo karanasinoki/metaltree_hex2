@@ -99,4 +99,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBullet: 1
   interval: 3
+  speed: 5
   bulletPrefab: {fileID: 8393490430684256307, guid: 9af980d3d256cc744a01e294721bb790, type: 3}

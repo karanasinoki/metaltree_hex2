@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class MineGene : MonoBehaviour
@@ -73,7 +71,7 @@ public class MineGene : MonoBehaviour
 
     private void SurfaceMineGene()
     {
-        //高度-5までの鉱石生成
+        //高度-6までの鉱石生成
         for (int y =6; y <= rightMax; y += boxWidth_Sur)
         {
             int tilePosNum_iron = Random.Range(1, 5 * boxWidth_Sur + 1);
@@ -90,8 +88,8 @@ public class MineGene : MonoBehaviour
             int x_Offset_lead = tilePosNum_lead / boxWidth_Sur;
             int y_Offset_lead = tilePosNum_lead % boxWidth_Sur;
 
-            mineMap.SetTile(new Vector3Int( - x_Offset_iron, y + y_Offset_iron - 1, 0), mines[0]);
-            mineMap.SetTile(new Vector3Int(-x_Offset_lead, y + y_Offset_lead - 1, 0), mines[1]);
+            mineMap.SetTile(new Vector3Int( - x_Offset_iron-1, y + y_Offset_iron - 1, 0), mines[0]);
+            mineMap.SetTile(new Vector3Int(-x_Offset_lead-1, y + y_Offset_lead - 1, 0), mines[1]);
         }
         for (int y = -6; y >= leftMax; y -= boxWidth_Sur)
         {
@@ -109,15 +107,15 @@ public class MineGene : MonoBehaviour
             int x_Offset_lead = tilePosNum_lead / boxWidth_Sur;
             int y_Offset_lead = tilePosNum_lead % boxWidth_Sur;
 
-            mineMap.SetTile(new Vector3Int(-x_Offset_iron, y - y_Offset_iron - 1, 0), mines[0]);
-            mineMap.SetTile(new Vector3Int(-x_Offset_lead, y - y_Offset_lead - 1, 0), mines[1]);
+            mineMap.SetTile(new Vector3Int(-x_Offset_iron-1, y - y_Offset_iron - 1, 0), mines[0]);
+            mineMap.SetTile(new Vector3Int(-x_Offset_lead-1, y - y_Offset_lead - 1, 0), mines[1]);
         }
     }
 
     private void DeepMineGene_iron_lead()
     {
         //高度-6より深い鉱石の生成
-        for(int x=-6;x>=downMax;x-=boxHeight)
+        for(int x=-7;x>=downMax;x-=boxHeight)
         {
             for (int y = 0; y <= rightMax; y += boxWidth)
             {
@@ -139,7 +137,7 @@ public class MineGene : MonoBehaviour
                 mineMap.SetTile(new Vector3Int(x-x_Offset_lead, y + y_Offset_lead - 1, 0), mines[1]);
             }
         }
-        for (int x = -6; x >= downMax; x -= boxHeight)
+        for (int x = -7; x >= downMax; x -= boxHeight)
         {
             for (int y = -1; y >= leftMax;y-=boxWidth)
             {
@@ -165,53 +163,132 @@ public class MineGene : MonoBehaviour
 
     private void RareMinesGene()
     {
-        
-        for(int x=goldTopPos;x>=downMax;x=-rareBoxHeight)
+        //金生成
+        for(int x=goldTopPos;x>=downMax;x-=rareBoxHeight)
         {
             for (int y = 0; y <= rightMax; y  += rareBoxWidth)
             {
-                int tilePos_Gold_Sur = Random.Range(1, (rareBoxHeight * rareBoxWidth + 1));
-                int x_Offset_gold_Sur = tilePos_Gold_Sur / (rareBoxWidth);
-                int y_Offset_gold_Sur = tilePos_Gold_Sur % (rareBoxWidth);
-                if (mineMap.HasTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y + y_Offset_gold_Sur, 0)))
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
                 {
-                    while (mineMap.HasTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y + y_Offset_gold_Sur, 0)))
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
                     {
-                        tilePos_Gold_Sur = Random.Range(1, (rareBoxHeight) * (rareBoxWidth) + 1);
-                        x_Offset_gold_Sur = tilePos_Gold_Sur / (rareBoxWidth);
-                        y_Offset_gold_Sur = tilePos_Gold_Sur % (rareBoxWidth);
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
                     }
                 }
-                mineMap.SetTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y + y_Offset_gold_Sur, 0), mines[2]);
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0), mines[2]);
 
             }
             for (int y = -1; y >= leftMax; y  -= rareBoxWidth)
             {
-                int tilePos_Gold_Sur = Random.Range(1, (rareBoxHeight * rareBoxWidth + 1));
-                int x_Offset_gold_Sur = tilePos_Gold_Sur / (rareBoxWidth);
-                int y_Offset_gold_Sur = tilePos_Gold_Sur % (rareBoxWidth);
-                if (mineMap.HasTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y - y_Offset_gold_Sur, 0)))
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0)))
                 {
-                    while (mineMap.HasTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y -y_Offset_gold_Sur, 0)))
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y -y_Offset_gold, 0)))
                     {
-                        tilePos_Gold_Sur = Random.Range(1, (rareBoxHeight) * (rareBoxWidth) + 1);
-                        x_Offset_gold_Sur = tilePos_Gold_Sur / (rareBoxWidth);
-                        y_Offset_gold_Sur = tilePos_Gold_Sur % (rareBoxWidth);
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
                     }
                 }
-                mineMap.SetTile(new Vector3Int(goldTopPos - x_Offset_gold_Sur, y - y_Offset_gold_Sur, 0), mines[2]);
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0), mines[2]);
 
             }
         }
-        
-        
-        
+
+        //ルビー生成
+        for (int x = jewelTopPos; x >= downMax; x -= rareBoxHeight)
+        {
+            for (int y = 0; y <= rightMax; y += rareBoxWidth)
+            {
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
+                {
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
+                    {
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                    }
+                }
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0), mines[3]);
+
+            }
+            for (int y = -1; y >= leftMax; y -= rareBoxWidth)
+            {
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0)))
+                {
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0)))
+                    {
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                    }
+                }
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0), mines[3]);
+
+            }
+        }
+
+        //サファイア生成
+        for (int x = jewelTopPos; x >= downMax; x -= rareBoxHeight)
+        {
+            for (int y = 0; y <= rightMax; y += rareBoxWidth)
+            {
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
+                {
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0)))
+                    {
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                    }
+                }
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y + y_Offset_gold, 0), mines[4]);
+
+            }
+            for (int y = -1; y >= leftMax; y -= rareBoxWidth)
+            {
+                int tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                int x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                int y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                if (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0)))
+                {
+                    while (mineMap.HasTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0)))
+                    {
+                        tilePos_Gold = Random.Range(1, (rareBoxHeight * rareBoxWidth) + 1);
+                        x_Offset_gold = tilePos_Gold / (rareBoxWidth);
+                        y_Offset_gold = tilePos_Gold % (rareBoxWidth);
+                    }
+                }
+                mineMap.SetTile(new Vector3Int(x - x_Offset_gold, y - y_Offset_gold, 0), mines[4]);
+
+            }
+        }
+
+
+
+
     }
 
     //A,B間の距離をだす
     //private int GetDistance( Vector3Int A, Vector3Int B)
     //{
-        
+
     //    if (Mathf.Abs((A.y%2))==Mathf.Abs((B.y%2)))
     //    {
     //        if(Mathf.Abs(A.y-B.y)<=2*Mathf.Abs(A.x-B.x))
@@ -223,7 +300,7 @@ public class MineGene : MonoBehaviour
     //        {
     //            Debug.Log("2");
     //            return Mathf.Abs(A.y - B.y);
-                
+
     //        }
     //    }
     //    else
@@ -292,6 +369,6 @@ public class MineGene : MonoBehaviour
     //            }
     //        }
     //    }
-        
+
     //}
 }
