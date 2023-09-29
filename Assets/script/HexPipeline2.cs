@@ -189,21 +189,13 @@ public class HexPipeline2 : MonoBehaviour
                     new Vector3Int(-1,-1,0)+new Vector3Int(grid.x,grid.y,0),
                     new Vector3Int(0,-1,0)+new Vector3Int(grid.x,grid.y,0),
 
-<<<<<<< HEAD
                 };
                 TileRenderer(hexPosAro,grid);
 
                 foreach (Vector3Int aroPos in hexPosAro)
                 {
-                    if (JudgeTiles(aroPos))
-=======
-                    };
                     
-                    TileRenderer(hexPosAro, grid);
-                 
-                    foreach (Vector3Int aroPos in hexPosAro)
->>>>>>> origin/develop
-                    {
+                    
                         if (JudgeTiles(aroPos))
                         {
                             if (aroPos.y % 2 == 0)
@@ -251,21 +243,14 @@ public class HexPipeline2 : MonoBehaviour
                     new Vector3Int(0,-1,0)+new Vector3Int(grid.x,grid.y,0),
                     new Vector3Int(1,-1,0)+new Vector3Int(grid.x,grid.y,0),
 
-<<<<<<< HEAD
+
                 };
                 TileRenderer(hexPosAro,grid);
 
                 foreach (Vector3Int aroPos in hexPosAro)
                 {
-                    if (JudgeTiles(aroPos))
-=======
-                    };
+                   
                     
-                    TileRenderer(hexPosAro, grid);
-                    
-                    foreach (Vector3Int aroPos in hexPosAro)
->>>>>>> origin/develop
-                    {
                         if (JudgeTiles(aroPos))
                         {
                             if (aroPos.y % 2 == 0)
